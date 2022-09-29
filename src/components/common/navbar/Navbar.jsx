@@ -1,11 +1,13 @@
 import React from 'react';
 
+import './Navbar.css'
+
 function Navbar () {
 
     return (
-        <section>
-            Hello
-        </section>
+        <section className="navbar">
+        <a href="/signin" className="navbar-item">Sign in</a>
+    </section>
     )
 }
 
