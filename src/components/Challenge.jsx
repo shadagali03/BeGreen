@@ -1,40 +1,57 @@
 import React, { useState } from 'react'
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import { doc, getDoc } from "firebase/firestore";
-import db from '../firebase'
-
-const firestore = firebase.firestore();
+import firebaseConfig from '../firebase'
+import { doc, getDocs, collection, query, where, onSnapshot } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 export default function Challenge() {
+    const db = getFirestore(initializeApp(firebaseConfig));
     const [challenge, setChallenge] = useState('')
     const todaysDate = new Date().toLocaleDateString();
-    const todaysChallangeRef = db.collection("todaysChallange").where("date", "==", todaysDate).get()
+    const todaysChallengeRef = query(collection(db, "dailyChallenge"), where("date", "==", todaysDate));
 
-    if (todaysChallangeRef) {
-        const todaysChallangeSnap = (async () => await getDoc(todaysChallangeRef))();
-        setChallenge(todaysChallangeSnap);
+    if (todaysChallengeRef) {
+        (async () => {
+            const todaysChallengeSnap = await getDocs(todaysChallengeRef);
+            let data;
+            todaysChallengeSnap.forEach((doc) => {
+                data = doc.data()
+            });
+            setChallenge(data.content);
+        })();
+
     } else {
         let size = 0;
 
-        firestore.collection('challenges').get().then(snap => {
+        query(collection(db, "challenges")).get().then(snap => {
             size = snap.size // will return the collection size
         });
-
         const randomNum = Math.floor(Math.random() * size)
-        const docRef = db.collection("challanges").where("id", "==", randomNum).get()
-        const docSnap = (async () => await getDoc(docRef))();
-        db.collection("todaysChallange").set({
-            id: randomNum,
-            date: todaysDate
-        })
+        const docRef = query(collection(db, "challenges"), where("id", "==", "randomNum"));
 
-        setChallenge(docSnap)
+        (async () => {
+            const docSnap = await getDocs(docRef)
+            let data;
+            docSnap.forEach((doc) => {
+                data = doc.data()
+            });
+            db.collection("todaysChallenge").set({
+                id: randomNum,
+                date: todaysDate,
+                content: docSnap
+            })
+
+            setChallenge(data.content)
+        })();
+
+
     }
 
     return (
         <div>
-            <h1>{challenge}</h1>
+            <h1 className='text-5xl font-bold mt-0 mb-6'>Today's Challenge: {challenge}</h1>
         </div>
     )
 }
