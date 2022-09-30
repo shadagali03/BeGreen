@@ -45,10 +45,7 @@ export default function Challenge() {
 
             setChallenge(data.content)
         })();
-
-
     }
-
     return (
         <div>
             <h1 className='text-5xl font-bold mt-0 mb-6'>Today's Challenge: {challenge}</h1>
