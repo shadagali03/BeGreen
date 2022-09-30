@@ -23,7 +23,7 @@ export default function SignIn() {
     }
 
     return (
-        <button onClick={signInWithGoogle} className="p-0 border-0 cursor-pointer">
+        <button onClick={signInWithGoogle} className="p-0 border-0 cursor-pointer absolute top-5 right-5">
             <img src="https://www.drupal.org/files/issues/2020-01-19/google_logo.png" alt="Sign in with Google" width="200" height="50" />
         </button>
     )

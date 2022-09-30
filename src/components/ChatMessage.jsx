@@ -8,14 +8,12 @@ export default function ChatMessage(props) {
     const { text, uid } = props.message
 
     useEffect(() => {
-        console.log('run')
         const firestore = firebase.firestore();
         (async () => {
             const userRef = await firestore.collection('users').doc(uid).get();
-            console.log(userRef.data());
             setUser(userRef.data());
         })()
-    })
+    }, [uid])
 
     return (
         <tr className='m-5'>
