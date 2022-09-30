@@ -1,11 +1,25 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 export default function SignIn() {
+    const firestore = firebase.firestore();
     const auth = firebase.auth();
-    const signInWithGoogle = () => {
+    const signInWithGoogle = async () => {
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider);
+        await auth.signInWithPopup(provider);
+        const { uid, displayName, email, photoURL } = auth.currentUser;
+        console.log(uid, displayName, email, photoURL)
+        firestore.collection('users').doc(uid).get().then((docSnapshot) => {
+            console.log('anfkdsnfks', docSnapshot.exists)
+            if (!docSnapshot.exists) {
+                firestore.collection('users').doc(uid).set({
+                    displayName,
+                    email,
+                    photoURL
+                })
+            }
+        });
     }
 
     return (

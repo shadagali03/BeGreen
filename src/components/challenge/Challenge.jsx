@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import firebaseConfig from '../firebase'
-import { doc, getDocs, collection, query, where, onSnapshot } from "firebase/firestore";
+import firebaseConfig from '../../firebase'
+import { getDocs, collection, query, where } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -45,13 +44,19 @@ export default function Challenge() {
 
             setChallenge(data.content)
         })();
-
-
     }
 
     return (
-        <div>
-            <h1 className='text-5xl font-bold mt-0 mb-6'>Today's Challenge: {challenge}</h1>
+        <div className="box">
+            <div className="inner">
+                <span>{challenge}</span>
+            </div>
+            <div className="inner">
+                <span>{challenge}</span>
+            </div>
         </div>
+        // <div>
+        //     <h1 className='text-5xl font-bold mt-0 mb-6'>Today's Challenge: {challenge}</h1>
+        // </div>
     )
 }

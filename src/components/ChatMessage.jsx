@@ -1,22 +1,29 @@
-import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
+import React, { useEffect, useState } from 'react'
+import 'firebase/compat/firestore';
+import firebase from 'firebase/compat/app';
 
 export default function ChatMessage(props) {
-    const auth = firebase.auth();
-    const { text, uid, photoURL } = props.message
-    const messageClass = uid === auth.currentUser.uid ? 'sent' : 'recieved';
+    const [user, setUser] = useState('');
+    const { text, uid } = props.message
+
+    useEffect(() => {
+        console.log('run')
+        const firestore = firebase.firestore();
+        (async () => {
+            const userRef = await firestore.collection('users').doc(uid).get();
+            console.log(userRef.data());
+            setUser(userRef.data());
+        })()
+    })
 
     return (
-        // <div className={`message ${messageClass}`}>
-        // <div className="inline-table">
-        //     <img className='w-auto h-auto rounded-full h-12 w-12' src={photoURL} alt='' />
-        //     <p className=''>{text}</p>
-        //     <br />
-        // </div>
-
         <tr className='m-5'>
-            <td><img className='w-auto h-auto rounded-full h-12 w-12' src={photoURL} alt='Google Profile' /></td>
-            <td><p className='pl-5 text-xl text-white'>{text}</p></td>
+            <td><img className='w-auto h-auto rounded-full h-12 w-12' src={user.photoURL} alt='Google Profile' /></td>
+            <td className='flex flex-col'>
+                <p className='pl-5 text-xl text-white font-extrabold'>{user.displayName}</p>
+                <p className='pl-5 text-xl text-white'>{text}</p>
+            </td>
         </tr>
     )
 }

@@ -16,14 +16,14 @@ export default function ChatRoom() {
     const [formValue, setFormValue] = useState('')
     const dummy = useRef()
     const sendMessage = async (e) => {
+        console.log(auth.currentUser)
         e.preventDefault();
-        const { uid, photoURL } = auth.currentUser;
+        const { uid } = auth.currentUser;
 
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             uid,
-            photoURL
         })
 
         setFormValue('');
@@ -31,7 +31,7 @@ export default function ChatRoom() {
     }
 
     return (
-        <div className='flex justify-center items-center h-full w-screen'>
+        <div className='flex justify-center items-center max-h-10 w-screen'>
             <div className='w-3/4 bg-gray-800 bg-opacity-50 rounded'>
                 <main>
                     <table className="table-auto m-5">
