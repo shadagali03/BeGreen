@@ -6,11 +6,12 @@ import ChatRoom from './components/ChatRoom';
 import firebaseConfig from './firebase';
 import { Header } from './components/common';
 import Challenge from './components/Challenge';
+import Chaltext from './components/chaltext';
 
 function App() {
   firebase.initializeApp(firebaseConfig);
   return (
-    <div className="App">
+    <div className="overflow-hidden">
       {/* <div className="relative overflow-hidden bg-no-repeat bg-cover w-screen h-screen" style={{
         backgroundPosition: '50%',
         backgroundImage: "url('https://media4.giphy.com/media/bXhiABcqQGT3W/giphy-downsized-large.gif')",
@@ -18,7 +19,7 @@ function App() {
         // height: '350px'
       }}> */}
         <Header />
-        <Challenge />
+        <Chaltext />
         <ChatRoom />
       </div>
     // </div>
